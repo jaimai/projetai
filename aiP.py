@@ -5,6 +5,7 @@ Created on Thu Apr 16 16:17:48 2020
 
 @author: Thomas / Mathias / Pierre / Felix 
 """
+
 import pandas as pd
 import numpy as np
 import os
@@ -15,20 +16,20 @@ from sklearn.metrics import confusion_matrix
 
 from keras.models import Sequential
 from keras.layers import Dense, Conv2D, MaxPool2D, Flatten
-from keras.preprocessing.image import ImageDataGenerator, image
+from keras.preprocessing.image import ImageDataGenerator
 
 #
 # PARAMETERS
 #
 
-dataFolder = '/tmp/lol/img_align_celeba'
-trainingFolder = '/tmp/lol/Training'
-testingFolder = '/tmp/lol/Testing'
+dataFolder = './img_align_celeba'
+trainingFolder = './Training'
+testingFolder = './Testing'
 
-csvFile = './TOTO/list_attr_celeba.csv'
+csvFile = './list_attr_celeba.csv'
 argument_idx = 21
 
-saveModelFile = '/tmp/lol/save.h5'
+saveModelFile = './save.h5'
 batch_size = 50
 img_size = (64, 64)
 input_shape = (64, 64, 3)
@@ -45,7 +46,7 @@ dataset = pd.read_csv(csvFile)
 img_id_list = dataset.iloc[:, 0].values
 argument_list = dataset.iloc[:, argument_idx].values
 
-# replace -1 into 0 in attractive_list
+# replace -1 into 0 in argument_list
 argument_list = np.where(argument_list == -1, 0, argument_list)
 
 # remove folders
@@ -149,10 +150,8 @@ test_set.reset()
 
 # Predict images
 y_predict = classifier.predict_generator(test_set, steps=(test_set.n // batch_size) + 1, verbose=1)
-y_test2 = test_set.classes[test_set.index_array]
-toto = np.squeeze(y_predict > 0.5)
+y_test = test_set.classes[test_set.index_array]
 
 # Confusion Matrix
-cm = confusion_matrix(y_test2, y_predict > 0.5)
-
+cm = confusion_matrix(y_test, y_predict > 0.5)
 print(cm)
