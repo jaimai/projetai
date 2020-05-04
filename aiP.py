@@ -157,7 +157,7 @@ y_test = test_set.classes[test_set.index_array]
 
 # Confusion Matrix
 cm = confusion_matrix(y_test, y_predict > 0.5)
-cm = pd.DataFrame(data=cm, index=["Male", "Female"], columns=["Male", "Female"])
+cm = pd.DataFrame(data=cm, index=["Female", "Male"], columns=["Female", "Male"])
 
 #
 # Part 5 : Visualisation
