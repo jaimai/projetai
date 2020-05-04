@@ -30,7 +30,7 @@ trainingFolder = './Training'
 testingFolder = './Testing'
 
 csvFile = './list_attr_celeba.csv'
-argument_idx = 21   # Male or female arg
+argument_idx = 21   # Male or female arg in csv file
 
 saveModelFile = './save.h5'
 batch_size = 50
@@ -42,31 +42,31 @@ epochs = 5
 # Part 1 : Preprocessing
 #
 
-# import datset
+# Importing dataset
 dataset = pd.read_csv(csvFile)
 
-# recover data
+# Recovering data from csv file
 img_id_list = dataset.iloc[:, 0].values
 argument_list = dataset.iloc[:, argument_idx].values
 
-# replace -1 into 0 in argument_list
+# Replacing -1 into 0 in argument_list
 argument_list = np.where(argument_list == -1, 0, argument_list)
 
-# remove folders
+# Removing old train and test folders
 shutil.rmtree(trainingFolder, ignore_errors=True)
 shutil.rmtree(testingFolder, ignore_errors=True)
 
-# Creating folders
+# Recreating train and test folders
 os.makedirs(os.path.join(trainingFolder, 'Presence_of_feature'), exist_ok=True)
 os.makedirs(os.path.join(trainingFolder, 'Absence_of_feature'), exist_ok=True)
 os.makedirs(os.path.join(testingFolder, 'Presence_of_feature'), exist_ok=True)
 os.makedirs(os.path.join(testingFolder, 'Absence_of_feature'), exist_ok=True)
 
-# Split dataset into training test set
+# Splitting dataset into training test set
 x_train, x_test, y_train, y_test = train_test_split(img_id_list, argument_list, test_size=0.2)
 
 
-# Copy img to folder fct
+# Copying img to folder fct
 def img_to_folder(name_folder, img_list, arg_list):
     for i in range(len(img_list)):
         src = os.path.join(dataFolder, img_list[i])
@@ -81,7 +81,7 @@ img_to_folder(trainingFolder, x_train, y_train)
 img_to_folder(testingFolder, x_test, y_test)
 
 #
-# Part 2 : building model
+# Part 2 : Building model
 #
 
 # init CNN 
