@@ -30,7 +30,7 @@ trainingFolder = './Training'
 testingFolder = './Testing'
 
 csvFile = './list_attr_celeba.csv'
-argument_idx = 21
+argument_idx = 21   # Male or female arg
 
 saveModelFile = './save.h5'
 batch_size = 50
@@ -98,7 +98,7 @@ classifier.add(Dense(units=1, activation='sigmoid'))
 classifier.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 #
-# Part 3 : fitting images to CNN
+# Part 3 : Training the model using training data
 #
 
 train_datagen = ImageDataGenerator(
@@ -136,7 +136,7 @@ hist = classifier.fit_generator(
 classifier.save(saveModelFile)
 
 #
-# Part 4 : Prediction 
+# Part 4 : Prediction using testing data
 #
 
 # Dataset test generator
