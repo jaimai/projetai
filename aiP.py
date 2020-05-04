@@ -18,6 +18,9 @@ from keras.models import Sequential
 from keras.layers import Dense, Conv2D, MaxPool2D, Flatten
 from keras.preprocessing.image import ImageDataGenerator
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 #
 # PARAMETERS
 #
@@ -33,7 +36,7 @@ saveModelFile = './save.h5'
 batch_size = 50
 img_size = (64, 64)
 input_shape = (64, 64, 3)
-epochs = 10
+epochs = 5
 
 #
 # Part 1 : Preprocessing
@@ -154,4 +157,36 @@ y_test = test_set.classes[test_set.index_array]
 
 # Confusion Matrix
 cm = confusion_matrix(y_test, y_predict > 0.5)
-print(cm)
+cm = pd.DataFrame(data=cm, index=["Male", "Female"], columns=["Male", "Female"])
+
+#
+# Part 5 : Visualisation
+#
+
+# Visualising confusion matrix using a heatmap
+plt.figure(figsize=(9, 9))
+ax = sns.heatmap(cm, annot=True, fmt="d", linewidths=.5, square=True, cmap='Blues_r')
+ax.set_ylim([2, 0])
+plt.ylabel('Actual label')
+plt.xlabel('Predicted label')
+title = 'Accuracy Score: {0:.5f}'.format(acc_v)
+plt.title(title, size=15)
+plt.show()
+
+# Visualising loss evolution during training
+plt.plot(hist.history['loss'])
+plt.plot(hist.history['val_loss'])
+plt.title('Model loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Val'], loc='upper right')
+plt.show()
+
+# Visualising accuracy evolution during training
+plt.plot(hist.history['acc'])
+plt.plot(hist.history['val_acc'])
+plt.title('Model accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Val'], loc='lower right')
+plt.show()
